@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  worker-check:
+    build: ./worker-check
+    command: python app.py
+    restart: always
+    env_file:
+      - service_vars.env
+
+  watchdog-scheduler:
+    build: ./watchdog-scheduler
+    command: python app.py
+    restart: always
+    env_file:
+      - service_vars.env
+
+  job-addtocheck:
+    build: ./job-addtocheck
+    command: python app.py
+    depends_on:
+      - redis
+    env_file:
+      - service_vars.env
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+        # web UI, NOT FOR PROD
+        - 15672:15672
+  
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    command: redis-server --loglevel warning
