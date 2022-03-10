@@ -1,2 +1,4 @@
 job-addtocheck/services_to_check.json
 tools/hosts.txt
+.DS_Store/
+.DS_Store
